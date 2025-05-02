@@ -12,11 +12,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 export default function PostModal({ triggerDate }: { triggerDate: string }) {
   const [title, setTitle] = useState("")
   const [platform, setPlatform] = useState("Instagram")
   const [content, setContent] = useState("")
+  const [open, setOpen] = useState(false)
+  const router = useRouter()
 
   const handleSave = async () => {
     const res = await fetch("/api/posts", {
@@ -31,15 +34,16 @@ export default function PostModal({ triggerDate }: { triggerDate: string }) {
     })
 
     if (res.ok) {
-      alert("Post saved!")
       setTitle("")
       setPlatform("Instagram")
       setContent("")
+      router.refresh()
+      setOpen(false)
     }
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" className="w-full">
           + Add Post

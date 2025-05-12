@@ -27,7 +27,7 @@ model Post {
   title       String
   platform    String
   content     String?
-  status      String
+  status      String    @default("Scheduled")
   scheduledAt DateTime?
   createdAt   DateTime  @default(now())
 

@@ -11,7 +11,7 @@ export async function PUT(
   if (!userId) return new NextResponse("Unauthorized", { status: 401 })
 
   const body = await request.json()
-  const { title, content, platform } = body
+  const { title, content, platform, status } = body
 
   try {
     const updated = await prisma.post.update({
@@ -23,6 +23,7 @@ export async function PUT(
         title,
         content,
         platform,
+        status,
       },
     })
 

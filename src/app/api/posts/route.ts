@@ -12,14 +12,14 @@ export async function POST(req: Request) {
       user?.emailAddresses?.[0]?.emailAddress ?? "unknown@placeholder.com"
 
     const body = await req.json()
-    const { title, content, platform, scheduledAt } = body
+    const { title, content, platform, scheduledAt, status } = body
 
     const post = await prisma.post.create({
       data: {
         title,
         content,
         platform,
-        status: "null",
+        status,
         scheduledAt: new Date(scheduledAt),
         user: {
           connectOrCreate: {

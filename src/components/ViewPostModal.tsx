@@ -20,6 +20,7 @@ type Post = {
   platform: string
   content: string | null
   scheduledAt: string
+  status: string
 }
 
 export default function ViewPostModal({ post }: { post: Post }) {
@@ -27,6 +28,7 @@ export default function ViewPostModal({ post }: { post: Post }) {
   const [title, setTitle] = useState(post.title)
   const [platform, setPlatform] = useState(post.platform)
   const [content, setContent] = useState(post.content || "")
+  const [status, setStatus] = useState(post.status)
 
   const router = useRouter()
 
@@ -34,7 +36,8 @@ export default function ViewPostModal({ post }: { post: Post }) {
     if (
       title === post.title &&
       platform === post.platform &&
-      content === (post.content || "")
+      content === (post.content || "") &&
+      status === post.status
     ) {
       alert("No changes made.")
       return
@@ -49,6 +52,7 @@ export default function ViewPostModal({ post }: { post: Post }) {
         title,
         platform,
         content,
+        status,
       }),
     })
 
@@ -123,6 +127,18 @@ export default function ViewPostModal({ post }: { post: Post }) {
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />
+          </div>
+          <div>
+            <Label>Status</Label>
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="w-full border rounded-md p-2 text-sm"
+            >
+              <option>Draft</option>
+              <option>Scheduled</option>
+              <option>Published</option>
+            </select>
           </div>
           <Button onClick={handleSave} className="w-full mt-2">
             Save Changes

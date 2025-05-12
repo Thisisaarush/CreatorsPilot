@@ -19,9 +19,16 @@ export default function PostModal({ triggerDate }: { triggerDate: string }) {
   const [platform, setPlatform] = useState("Instagram")
   const [content, setContent] = useState("")
   const [open, setOpen] = useState(false)
+  const [status, setStatus] = useState("Scheduled")
+
   const router = useRouter()
 
   const handleSave = async () => {
+    if (!title) {
+      alert("Please enter a title.")
+      return
+    }
+
     const res = await fetch("/api/posts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -30,6 +37,7 @@ export default function PostModal({ triggerDate }: { triggerDate: string }) {
         content,
         platform,
         scheduledAt: triggerDate,
+        status,
       }),
     })
 
@@ -77,6 +85,18 @@ export default function PostModal({ triggerDate }: { triggerDate: string }) {
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />
+          </div>
+          <div>
+            <Label>Status</Label>
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="w-full border rounded-md p-2 text-sm"
+            >
+              <option>Draft</option>
+              <option>Scheduled</option>
+              <option>Published</option>
+            </select>
           </div>
           <Button onClick={handleSave} className="w-full">
             Save

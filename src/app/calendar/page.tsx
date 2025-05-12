@@ -1,4 +1,4 @@
-import CalendarGrid from "@/components/calendar/CalendarGrid"
+import CalendarGrid from "@/components/calendar/CalendarGrid.server"
 import Filters from "@/components/calendar/Filters"
 
 type Params = Promise<{ slug: string }>

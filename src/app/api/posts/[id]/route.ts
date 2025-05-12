@@ -56,3 +56,25 @@ export async function DELETE(
     return new NextResponse("Server Error", { status: 500 })
   }
 }
+
+export async function PATCH(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  const { userId } = await auth()
+  if (!userId) return new NextResponse("Unauthorized", { status: 401 })
+
+  const { scheduledAt } = await req.json()
+
+  try {
+    const updated = await prisma.post.update({
+      where: { id: params.id, userId },
+      data: { scheduledAt: new Date(scheduledAt) },
+    })
+
+    return NextResponse.json(updated)
+  } catch (err) {
+    console.error("Error updating scheduledAt:", err)
+    return new NextResponse("Failed", { status: 500 })
+  }
+}

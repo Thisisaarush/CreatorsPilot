@@ -4,13 +4,24 @@ import { auth } from "@clerk/nextjs/server"
 import PostModal from "@/components/PostModal"
 import ViewPostModal from "@/components/ViewPostModal"
 
-export default async function CalendarGrid() {
+export default async function CalendarGrid({
+  platform,
+  status,
+}: {
+  platform: string
+  status: string
+}) {
   const { userId } = await auth()
   if (!userId) return null
 
-  const posts = await prisma.post.findMany({
-    where: { userId },
-  })
+  const where: { [key: string]: string } = { userId }
+
+  console.log("where", where, status, platform)
+
+  if (platform !== "All") where.platform = platform
+  if (status !== "All") where.status = status
+
+  const posts = await prisma.post.findMany({ where })
 
   // Group posts by date (YYYY-MM-DD)
   const postMap: Record<string, typeof posts> = {}

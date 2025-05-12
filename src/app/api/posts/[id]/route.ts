@@ -3,19 +3,20 @@ import { auth } from "@clerk/nextjs/server"
 import prisma from "@/lib/db"
 
 export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   const { userId } = await auth()
   if (!userId) return new NextResponse("Unauthorized", { status: 401 })
 
-  const body = await req.json()
+  const body = await request.json()
   const { title, content, platform } = body
 
   try {
     const updated = await prisma.post.update({
       where: {
-        id: params.id,
+        id: id,
         userId: userId,
       },
       data: {
@@ -33,16 +34,17 @@ export async function PUT(
 }
 
 export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   const { userId } = await auth()
   if (!userId) return new NextResponse("Unauthorized", { status: 401 })
 
   try {
     await prisma.post.delete({
       where: {
-        id: params.id,
+        id: id,
         userId,
       },
     })

@@ -59,8 +59,10 @@ export async function DELETE(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
+
   const { userId } = await auth()
   if (!userId) return new NextResponse("Unauthorized", { status: 401 })
 
@@ -68,7 +70,7 @@ export async function PATCH(
 
   try {
     const updated = await prisma.post.update({
-      where: { id: params.id, userId },
+      where: { id: id, userId },
       data: { scheduledAt: new Date(scheduledAt) },
     })
 

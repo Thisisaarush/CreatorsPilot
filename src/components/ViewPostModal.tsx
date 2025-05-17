@@ -100,7 +100,7 @@ export default function ViewPostModal({ post }: { post: Post }) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <span
-            className={`text-xs px-2 py-1 rounded-md inline-block text-white cursor-pointer ${
+            className={`text-xs px-2 py-1 inline-block text-white cursor-pointer ${
               platform === "Instagram"
                 ? "bg-pink-500"
                 : platform === "LinkedIn"
